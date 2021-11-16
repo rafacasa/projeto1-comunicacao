@@ -9,14 +9,16 @@
 #define LED_ALERTA 13
 
 //Configuraçao de tempo entre acionamentos de botões para o debounce (em ms)
-#define TEMPO_DEBOUNCE 100 
+#define TEMPO_DEBOUNCE 500 
 
 
 // Variáveis Globais
 unsigned long timestamp_ultimo_acionamento_liga_desliga = 0;
+unsigned long timestamp_ultimo_acionamento_reset_alerta = 0;
 
 
 bool ligado = false;
+bool alerta = false;
 
 
 // Função chamada pela interrupção acionada pelo botão liga desliga
@@ -25,6 +27,15 @@ void IRAM_ATTR liga_desliga() {
   if ( (millis() - timestamp_ultimo_acionamento_liga_desliga) >= TEMPO_DEBOUNCE ) {
     ligado = !ligado;
     timestamp_ultimo_acionamento_liga_desliga = millis();
+  }
+}
+
+// Função chamada pela interrupção acionada pelo botão de reset do alerta
+void IRAM_ATTR reset_alerta() {
+  // Debounce por software
+  if ( (millis() - timestamp_ultimo_acionamento_reset_alerta) >= TEMPO_DEBOUNCE ) {
+    alerta = !alerta;
+    timestamp_ultimo_acionamento_reset_alerta = millis();
   }
 }
 
@@ -37,6 +48,7 @@ void setup() {
   pinMode(LED_ALERTA, OUTPUT);
 
   attachInterrupt(BOTAO_LIGA_DESLIGA, liga_desliga, FALLING);
+  attachInterrupt(BOTAO_RESET_ALERTA, reset_alerta, FALLING);
 }
 
 // the loop function runs over and over again forever
@@ -45,6 +57,11 @@ void loop() {
     digitalWrite(MOTOR_PWM, HIGH);
   } else {
     digitalWrite(MOTOR_PWM, LOW);
+  }
+  if(alerta) {
+    digitalWrite(LED_ALERTA, HIGH);
+  } else {
+    digitalWrite(LED_ALERTA, LOW);
   }
   delay(1000);        
 }
