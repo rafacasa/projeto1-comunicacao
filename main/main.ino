@@ -65,9 +65,13 @@ void setup() {
 
 // the loop function runs over and over again forever
 void loop() {
+  unsigned int leitura_adc;
+  int temperatura;
 
-  Serial.println(analogRead(SENSOR_TEMPERATURA));
-  //map(x, x, x, VALOR_MINIMO_SENSOR_TEMPERATURA, VALOR_MAXIMO_SENSOR_TEMPERATURA)
+  leitura_adc = analogRead(SENSOR_TEMPERATURA);
+  temperatura = map(leitura_adc, 0, 4096, VALOR_MINIMO_SENSOR_TEMPERATURA, VALOR_MAXIMO_SENSOR_TEMPERATURA);
+
+  Serial.println(temperatura);
   
   if(ligado) {
     digitalWrite(MOTOR_PWM, HIGH);
