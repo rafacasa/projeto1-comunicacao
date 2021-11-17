@@ -60,7 +60,7 @@ void setup() {
   attachInterrupt(BOTAO_LIGA_DESLIGA, liga_desliga, FALLING);
   attachInterrupt(BOTAO_RESET_ALERTA, reset_alerta, FALLING);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 // the loop function runs over and over again forever
