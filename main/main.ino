@@ -75,7 +75,8 @@ void setup() {
 
 void loop() {
   unsigned int leitura_adc;
-  unsigned long tempo1, tempo2;
+  unsigned long tempo1;
+  unsigned long tempo2;
 
   tempo1 = millis();
   leitura_adc = analogRead(SENSOR_TEMPERATURA);
@@ -110,7 +111,9 @@ void loop() {
   Serial.print("PWM MOTOR: ");
   Serial.println(pwm_motor);
   Serial.print("TEMPO EXECUCAO: ");
-  Serial.println(millis());
+  Serial.print(tempo2);
+  Serial.print(" - ");
+  Serial.println(tempo1);
   
   delay(500);        
 }
