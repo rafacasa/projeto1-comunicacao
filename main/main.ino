@@ -23,7 +23,7 @@
 unsigned long timestamp_ultimo_acionamento_liga_desliga = 0;
 unsigned long timestamp_ultimo_acionamento_reset_alerta = 0;
 
-unsigned int setpoint = 65;
+unsigned int setpoint = 40;
 unsigned int limite_alerta = 115;
 unsigned int temperatura_lida;
 unsigned int pwm_motor;
@@ -91,7 +91,7 @@ void loop() {
       if(temperatura_lida < setpoint) {
         pwm_motor = 255;
       } else {
-        pwm_motor = map(temperatura_lida, setpoint, limite_alerta, 0, 255);
+        pwm_motor = map(temperatura_lida, setpoint, limite_alerta, 255, 0);
       }
     }
   } else {
