@@ -34,6 +34,8 @@ volatile bool leitura_temperatura_feita;
 bool ligado = false;
 bool alerta = false;
 
+byte buffer_leitura[5]; 
+
 hw_timer_t * timer = NULL;
 
 
@@ -88,10 +90,7 @@ void setup() {
 
 
 void loop() {
-  unsigned long tempo1;
-  unsigned long tempo2;
-
-  tempo1 = millis();
+  
   if (leitura_temperatura_feita) {
     temperatura_lida = map(leitura_adc, 0, 4096, VALOR_MINIMO_SENSOR_TEMPERATURA, VALOR_MAXIMO_SENSOR_TEMPERATURA);
   
@@ -114,20 +113,12 @@ void loop() {
   
     ledcWrite(CANAL_PWM, pwm_motor);
   }
-  tempo2 = millis();
-  
-  Serial.print("SETPOINT: ");
-  Serial.println(setpoint);
-  Serial.print("LIMITE ALERTA: ");
-  Serial.println(limite_alerta);
-  Serial.print("TEMPERATURA: ");
-  Serial.println(temperatura_lida);
-  Serial.print("PWM MOTOR: ");
-  Serial.println(pwm_motor);
-  Serial.print("TEMPO EXECUCAO: ");
-  Serial.print(tempo2);
-  Serial.print(" - ");
-  Serial.println(tempo1);
-  
-  delay(100);        
+
+  if(Serial.available() >= 5) {
+    Serial.readBytes(buffer_leitura, 5);
+    //VERIFICAR CRC
+    Serial.print("RECEBIDO HEIN");
+    Serial.write(buffer_leitura, 5);
+  }
+         
 }
