@@ -110,7 +110,7 @@ void loop() {
   Serial.print("PWM MOTOR: ");
   Serial.println(pwm_motor);
   Serial.print("TEMPO EXECUCAO: ");
-  Serial.println(tempo2 - tempo1);
+  Serial.println(millis());
   
   delay(500);        
 }
