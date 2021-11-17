@@ -28,8 +28,13 @@ unsigned int limite_alerta = 115;
 unsigned int temperatura_lida;
 unsigned int pwm_motor;
 
+volatile unsigned int leitura_adc;
+volatile bool leitura_temperatura_feita;
+
 bool ligado = false;
 bool alerta = false;
+
+hw_timer_t * timer = NULL;
 
 
 // Função chamada pela interrupção acionada pelo botão liga desliga
@@ -55,6 +60,10 @@ void IRAM_ATTR reset_alerta() {
   }
 }
 
+void IRAM_ATTR leitura_temperatura_timer() {
+  leitura_adc = analogRead(SENSOR_TEMPERATURA);
+  leitura_temperatura_feita = true;
+}
 
 void setup() {
   // Inicializar pinos
@@ -69,37 +78,42 @@ void setup() {
   attachInterrupt(BOTAO_LIGA_DESLIGA, liga_desliga, FALLING);
   attachInterrupt(BOTAO_RESET_ALERTA, reset_alerta, FALLING);
 
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &leitura_temperatura_timer, true);
+  timerAlarmWrite(timer, 500000, true);
+  timerAlarmEnable(timer);
+  
   Serial.begin(115200);
 }
 
 
 void loop() {
-  unsigned int leitura_adc;
   unsigned long tempo1;
   unsigned long tempo2;
 
   tempo1 = millis();
-  leitura_adc = analogRead(SENSOR_TEMPERATURA);
-  temperatura_lida = map(leitura_adc, 0, 4096, VALOR_MINIMO_SENSOR_TEMPERATURA, VALOR_MAXIMO_SENSOR_TEMPERATURA);
-
-  if(ligado) {
-    if(temperatura_lida > limite_alerta) {
-      alerta = true;
-      ligado = false;
-      pwm_motor = 0;
-      digitalWrite(LED_ALERTA, HIGH);
-    } else {
-      if(temperatura_lida < setpoint) {
-        pwm_motor = 255;
+  if (leitura_temperatura_feita) {
+    temperatura_lida = map(leitura_adc, 0, 4096, VALOR_MINIMO_SENSOR_TEMPERATURA, VALOR_MAXIMO_SENSOR_TEMPERATURA);
+  
+    if(ligado) {
+      if(temperatura_lida > limite_alerta) {
+        alerta = true;
+        ligado = false;
+        pwm_motor = 0;
+        digitalWrite(LED_ALERTA, HIGH);
       } else {
-        pwm_motor = map(temperatura_lida, setpoint, limite_alerta, 255, 0);
+        if(temperatura_lida < setpoint) {
+          pwm_motor = 255;
+        } else {
+          pwm_motor = map(temperatura_lida, setpoint, limite_alerta, 255, 0);
+        }
       }
+    } else {
+      pwm_motor = 0;
     }
-  } else {
-    pwm_motor = 0;
+  
+    ledcWrite(CANAL_PWM, pwm_motor);
   }
-
-  ledcWrite(CANAL_PWM, pwm_motor);
   tempo2 = millis();
   
   Serial.print("SETPOINT: ");
@@ -115,5 +129,5 @@ void loop() {
   Serial.print(" - ");
   Serial.println(tempo1);
   
-  delay(500);        
+  delay(100);        
 }
