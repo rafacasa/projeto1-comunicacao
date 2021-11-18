@@ -146,13 +146,10 @@ void loop() {
             enviar_dados();
             break;
           case 0xC4:
-            Serial.write(0xC4);
+            setpoint = buffer_leitura[2];
             break;
           case 0xF1:
-            Serial.write(0xF1);
-            break;
-          default:
-            Serial.print("DEFAULT SWITCH");
+            limite_alerta = buffer_leitura[2];
             break;
         }
       }
