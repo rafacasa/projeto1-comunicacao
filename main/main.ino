@@ -34,7 +34,7 @@ volatile bool leitura_temperatura_feita;
 bool ligado = false;
 bool alerta = false;
 
-byte buffer_leitura[5]; 
+uint8_t buffer_leitura[5]; 
 
 hw_timer_t * timer = NULL;
 
@@ -114,10 +114,13 @@ void loop() {
     ledcWrite(CANAL_PWM, pwm_motor);
   }
 
+
   if(Serial.available() >= 5) {
     Serial.readBytes(buffer_leitura, 5);
+    if(buffer_leitura[0] == 0x0A) {
+      Serial.print("CONFERE");
+    }
     //VERIFICAR CRC
-    Serial.print("RECEBIDO HEIN");
     Serial.write(buffer_leitura, 5);
   }
          
