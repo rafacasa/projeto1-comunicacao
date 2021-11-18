@@ -79,7 +79,7 @@ void enviar_dados() {
   buffer_envio[1] = setpoint;
   buffer_envio[2] = limite_alerta;
   buffer_envio[3] = temperatura_lida;
-  buffer_envio[4] = setpoint;
+  buffer_envio[4] = pwm_motor;
   
   valor_crc = crc.XModemCrc(buffer_envio,0,5);
   buffer_envio[5] = highByte(valor_crc);
