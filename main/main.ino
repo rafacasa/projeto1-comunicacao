@@ -5,21 +5,21 @@
 #include <Crc16.h>    // biblioteca de funcoes CRC-16
 
 // Pinagem das funções
-#define BOTAO_LIGA_DESLIGA 32
-#define BOTAO_RESET_ALERTA 22
-#define MOTOR_PWM 12
-#define LED_ALERTA 13
-#define SENSOR_TEMPERATURA 36
+const uint8_t BOTAO_LIGA_DESLIGA = 32;
+const uint8_t BOTAO_RESET_ALERTA = 22;
+const uint8_t MOTOR_PWM = 12;
+const uint8_t LED_ALERTA = 13;
+const uint8_t SENSOR_TEMPERATURA = 36;
 
 //Configuraçao de tempo entre acionamentos de botões para o debounce (em ms)
-#define TEMPO_DEBOUNCE 500 
+const uint16_t TEMPO_DEBOUNCE = 500;
 
 // Configuração dos valores mínimo e máximo do sensor de temperatura para a conversão de volts para graus celsius
-#define VALOR_MINIMO_SENSOR_TEMPERATURA 2
-#define VALOR_MAXIMO_SENSOR_TEMPERATURA 150
+const uint8_t VALOR_MINIMO_SENSOR_TEMPERATURA = 2;
+const uint8_t VALOR_MAXIMO_SENSOR_TEMPERATURA = 150;
 
-#define FREQUENCIA_PWM 1000
-#define CANAL_PWM 0
+const uint16_t FREQUENCIA_PWM = 1000;
+const uint8_t CANAL_PWM = 0;
 
 // Variáveis Globais
 unsigned long timestamp_ultimo_acionamento_liga_desliga = 0;
@@ -30,7 +30,7 @@ uint8_t limite_alerta = 115;
 uint8_t temperatura_lida;
 uint8_t pwm_motor;
 
-volatile unsigned int leitura_adc;
+volatile uint16_t leitura_adc;
 volatile bool leitura_temperatura_feita;
 
 bool ligado = false;
