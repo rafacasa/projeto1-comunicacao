@@ -121,9 +121,21 @@ void loop() {
   if(Serial.available() >= 5) {
     Serial.readBytes(buffer_leitura, 5);
     if(buffer_leitura[0] == 0x0A) {
-      Serial.print("CONFERE");
       if(crc.XModemCrc(buffer_leitura,0,5) == 0) {
-        Serial.print("CRC PASS");
+        switch(buffer_leitura[1]) {
+          case 0x00:
+            Serial.write(0x00);
+            break;
+          case 0xC4:
+            Serial.write(0xC4);
+            break;
+          case 0xF1:
+            Serial.write(0xF1);
+            break;
+          default:
+            Serial.print("DEFAULT SWITCH");
+            break;
+        }
       }
     }
     //VERIFICAR CRC
