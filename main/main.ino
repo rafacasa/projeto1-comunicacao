@@ -25,10 +25,10 @@
 unsigned long timestamp_ultimo_acionamento_liga_desliga = 0;
 unsigned long timestamp_ultimo_acionamento_reset_alerta = 0;
 
-unsigned int setpoint = 40;
-unsigned int limite_alerta = 115;
-unsigned int temperatura_lida;
-unsigned int pwm_motor;
+uint8_t setpoint = 40;
+uint8_t limite_alerta = 115;
+uint8_t temperatura_lida;
+uint8_t pwm_motor;
 
 volatile unsigned int leitura_adc;
 volatile bool leitura_temperatura_feita;
@@ -69,6 +69,25 @@ void IRAM_ATTR leitura_temperatura_timer() {
   leitura_adc = analogRead(SENSOR_TEMPERATURA);
   leitura_temperatura_feita = true;
 }
+
+
+void enviar_dados() {
+  uint8_t buffer_envio[7];
+  uint16_t valor_crc;
+  
+  buffer_envio[0] = 0x3F;
+  buffer_envio[1] = setpoint;
+  buffer_envio[2] = limite_alerta;
+  buffer_envio[3] = temperatura_lida;
+  buffer_envio[4] = setpoint;
+  
+  valor_crc = crc.XModemCrc(buffer_envio,0,5);
+  buffer_envio[5] = highByte(valor_crc);
+  buffer_envio[6] = lowByte(valor_crc);
+
+  Serial.write(buffer_envio, 7);
+}
+
 
 void setup() {
   // Inicializar pinos
@@ -124,7 +143,7 @@ void loop() {
       if(crc.XModemCrc(buffer_leitura,0,5) == 0) {
         switch(buffer_leitura[1]) {
           case 0x00:
-            Serial.write(0x00);
+            enviar_dados();
             break;
           case 0xC4:
             Serial.write(0xC4);
@@ -138,8 +157,5 @@ void loop() {
         }
       }
     }
-    //VERIFICAR CRC
-    Serial.write(buffer_leitura, 5);
   }
-         
 }
