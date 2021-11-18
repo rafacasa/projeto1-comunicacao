@@ -2,6 +2,8 @@
   Trabalho 1 de Comunicação de Dados
 */
 
+#include <Crc16.h>    // biblioteca de funcoes CRC-16
+
 // Pinagem das funções
 #define BOTAO_LIGA_DESLIGA 32
 #define BOTAO_RESET_ALERTA 22
@@ -38,6 +40,7 @@ uint8_t buffer_leitura[5];
 
 hw_timer_t * timer = NULL;
 
+Crc16 crc;
 
 // Função chamada pela interrupção acionada pelo botão liga desliga
 void IRAM_ATTR liga_desliga() {
@@ -119,6 +122,9 @@ void loop() {
     Serial.readBytes(buffer_leitura, 5);
     if(buffer_leitura[0] == 0x0A) {
       Serial.print("CONFERE");
+      if(crc.XModemCrc(buffer_leitura,0,5) == 0) {
+        Serial.print("CRC PASS");
+      }
     }
     //VERIFICAR CRC
     Serial.write(buffer_leitura, 5);
