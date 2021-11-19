@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
 			setpoint = recebido[1];
 			limite = recebido[2];	
 			temp = recebido[3];
-			saida = recebido[4];
+			saida = recebido[4] * 100 / 255;
 			
 			}
 			
