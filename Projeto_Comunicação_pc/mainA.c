@@ -1,13 +1,4 @@
-//****************************************************************************
-// Comunicacao de Dados
-// Professor: Gustavo Kunzel
-// Codigo de exemplo para acesso a porta serial
-// main.c - contem o metodo principal
-// serial.h - biblioteca com as funcoes serial
-// serial.c - declaracao das funcoes
-//****************************************************************************
-
-// bibliotecas de funcoes
+// Inclusão das Bibliotecas
 #include "serial.h"
 #include "crc16.h"
 #include <string.h>
@@ -15,12 +6,14 @@
 #include <conio.h>
 #include <Windows.h>
 
-// configuracao de uma porta para 4800 8-N-1
-#define PORTA_COM "COM3"         // porta de comunicao
-#define BAUDRATE 9600          // taxa em bps
-#define PARIDADE NOPARITY       // paridade (NOPARITY, PARITY_EVEN, PARITY_ODD
-#define STOPBITS ONESTOPBIT     // stop bits (ONESTOPBIT, TWOSTOPBITS, ONE5STOPBITS)
+// Configurações da conexão serial
+#define PORTA_COM "COM3"
+#define BAUDRATE 9600
+#define PARIDADE NOPARITY
+#define STOPBITS ONESTOPBIT
 
+
+// Função para apagar os resíduos da leitura do teclado
 void flush_in() {
 	int ch;
 	do {
@@ -28,7 +21,8 @@ void flush_in() {
 	} while (ch != EOF && ch != '\n');
 }
 
-// metodo principal
+
+// Função principal
 int main(int argc, char *argv[])
 {
 
@@ -42,17 +36,17 @@ int main(int argc, char *argv[])
 	unsigned short crc16_result;
 	unsigned char buffer[10];
 	unsigned char recebido[10];
-	// cria uma estrutura para manipular uma porta serial
 	SerialPort s;
-	// SerialPort s1;     // cria uma outra porta serial
 
-	//abre a porta de comunicacao com as definicoes
+
+	// Abrir a porta serial
 	if(!serialOpen(&s, PORTA_COM,BAUDRATE,8,PARIDADE,STOPBITS))
 	{
 		printf("Erro de inicializacao.\n");
 		system("PAUSE"); return -1;
 	}
 
+	// Fazer uma consulta ao microcontrolador para obter os valores de setpoint e alerta configurados no momento
 	buffer[0] = 0x0A;
 	buffer[1] = 0x00;
 	buffer[2] = 0x00;
@@ -77,6 +71,7 @@ int main(int argc, char *argv[])
 		limite = recebido[2];	
 	}
 
+	// Loop do menu
 	while(c != 'x'){
 
 		system("cls");
@@ -91,6 +86,7 @@ int main(int argc, char *argv[])
 		c = getchar();
 		flush_in();
 
+		// Verificação da escolha do menu
 		switch (c){
 			case '1':
 				while(1){
