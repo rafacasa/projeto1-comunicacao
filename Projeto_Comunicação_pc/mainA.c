@@ -13,6 +13,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <conio.h>
+#include <Windows.h>
 
 // configuracao de uma porta para 4800 8-N-1
 #define PORTA_COM "COM3"         // porta de comunicao
@@ -175,6 +176,7 @@ int main(int argc, char *argv[])
 	        printf("\nTemperatura: %d",temp);
 	        printf("\nMotor: %d", saida);
 	        printf("\nQualquer tecla para Retornar\n");
+	        Sleep(500);
 	        }
         break;
     case 'x':
