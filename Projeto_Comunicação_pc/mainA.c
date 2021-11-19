@@ -99,22 +99,19 @@ int main(int argc, char *argv[])
 					printf("\nSetpoint: %d",setpoint);
 					printf("\n\n0. Retornar\n\n");
 					printf("Novo setpoint: ");
-					scanf("%d", &aux);
+					scanf("%hu", &aux);
 					flush_in();
 
 					if(aux==0) {
 						system ("cls"); 
 						break;
 					}
-					else if(aux>0 && aux<=80) {
+					else if(aux>0 && aux<=limite) {
 						setpoint=aux;
-
 						buffer[0] = 0x0A;
 						buffer[1] = 0xC4;
 						buffer[2] = setpoint;
-
 						crc16_result = crc16_ccitt(buffer,3);
-
 						serialPutBytes(&s, buffer, 3);
 						serialPutc(&s, crc16_result>>8);
 						serialPutc(&s, crc16_result & 0xFF);
@@ -133,7 +130,7 @@ int main(int argc, char *argv[])
 					printf("\nSetpoint: %d",setpoint);
 					printf("\n\n0. Retornar\n\n");
 					printf("Novo limite: ");
-					scanf("%d", &aux);
+					scanf("%hu", &aux);
 					flush_in();
 
 					if(aux==0) {
@@ -204,8 +201,8 @@ int main(int argc, char *argv[])
 					printf("\nSetpoint: %d",setpoint);
 					printf("\nTemperatura: %d",temp);
 					printf("\nMotor: %d", saida);
-					printf("\nQualquer tecla para Retornar\n");
-					Sleep(500);
+					printf("\nPressione Enter para Retornar\n");
+					Sleep(1000);
 				}
 				break;
 			case 'x':
