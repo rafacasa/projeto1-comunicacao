@@ -33,7 +33,12 @@ int main(int argc, char *argv[])
 {
 
   char c;
-  unsigned short setpoint=50, limite=80, aux, saida, temp, i;
+  unsigned short setpoint=50;
+  unsigned short limite=80;
+  unsigned short aux;
+  unsigned short saida;
+  unsigned short temp;
+  unsigned short i;
   unsigned short crc16_result;
   unsigned char buffer[10];
   unsigned char recebido[10];
@@ -137,8 +142,11 @@ int main(int argc, char *argv[])
     case '3':
     	while(1){
     		
-    		if(kbhit())
-				break;
+    		if(kbhit()) {
+    			flush_in();
+    			break;	
+    		}
+				
 
 				buffer[0] = 0x0A;
 				buffer[1] = 0x00;
