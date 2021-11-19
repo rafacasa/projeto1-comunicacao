@@ -126,7 +126,7 @@ void setup() {
   timerAlarmWrite(timer, 500000, true);
   timerAlarmEnable(timer);
   
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 
