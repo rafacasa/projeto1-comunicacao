@@ -138,7 +138,14 @@ int main(int argc, char *argv[])
     		
     		if(kbhit())
 				break;
-    		
+
+				buffer[0] = 0x0A;
+				buffer[1] = 0x00;
+				buffer[2] = 0x00;
+				buffer[3] = 0xC7;
+				buffer[4] = 0xC1;
+    		serialPutBytes(&s, buffer, 5);
+
     		if(serialGetc(&s) == 0x3F){
 				recebido[0] = 0x3F;
 				i=1;
