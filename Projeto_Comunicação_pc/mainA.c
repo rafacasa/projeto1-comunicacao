@@ -20,6 +20,12 @@
 #define PARIDADE NOPARITY       // paridade (NOPARITY, PARITY_EVEN, PARITY_ODD
 #define STOPBITS ONESTOPBIT     // stop bits (ONESTOPBIT, TWOSTOPBITS, ONE5STOPBITS)
 
+void flush_in() {
+    int ch;
+    do {
+        ch = fgetc(stdin)
+    } while (ch != EOF && ch != '\n');
+}
 
 // metodo principal
 int main(int argc, char *argv[])
@@ -53,6 +59,7 @@ int main(int argc, char *argv[])
     printf("Opcao: ");
 
     c = getchar();
+    flush_in();
 
     switch (c){
     case '1':
@@ -62,7 +69,8 @@ int main(int argc, char *argv[])
 	        printf("\nSetpoint: %d",setpoint);
 	        printf("\n\n0. Retornar\n\n");
 	        printf("Novo setpoint: ");
-	        scanf("%d\n", &aux);
+	        scanf("%d", &aux);
+	        flush_in();
 	        
 	        if(aux==0) {
 	        	system ("cls"); 
@@ -97,7 +105,8 @@ int main(int argc, char *argv[])
 	        printf("\nSetpoint: %d",setpoint);
 	        printf("\n\n0. Retornar\n\n");
 	        printf("Novo limite: ");
-	        scanf("%d\n", &aux);
+	        scanf("%d", &aux);
+	        flush_in()
 	        
 	        if(aux==0) {
 	        	system ("cls"); 
