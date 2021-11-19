@@ -23,7 +23,7 @@
 void flush_in() {
     int ch;
     do {
-        ch = fgetc(stdin)
+        ch = fgetc(stdin);
     } while (ch != EOF && ch != '\n');
 }
 
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 	        printf("\n\n0. Retornar\n\n");
 	        printf("Novo limite: ");
 	        scanf("%d", &aux);
-	        flush_in()
+	        flush_in();
 	        
 	        if(aux==0) {
 	        	system ("cls"); 
