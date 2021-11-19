@@ -134,6 +134,7 @@ void loop() {
 
   // Controle do processo
   if (leitura_temperatura_feita) {
+    leitura_temperatura_feita = false;
     temperatura_lida = map(leitura_adc, 0, 4096, VALOR_MINIMO_SENSOR_TEMPERATURA, VALOR_MAXIMO_SENSOR_TEMPERATURA);
   
     if(ligado) {
