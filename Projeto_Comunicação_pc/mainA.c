@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 	        printf("\nSetpoint: %d",setpoint);
 	        printf("\n\n0. Retornar\n\n");
 	        printf("Novo setpoint: ");
-	        scanf("%d", &aux);
+	        scanf("%d\n", &aux);
 	        
 	        if(aux==0) {
 	        	system ("cls"); 
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 	        printf("\nSetpoint: %d",setpoint);
 	        printf("\n\n0. Retornar\n\n");
 	        printf("Novo limite: ");
-	        scanf("%d", &aux);
+	        scanf("%d\n", &aux);
 	        
 	        if(aux==0) {
 	        	system ("cls"); 
