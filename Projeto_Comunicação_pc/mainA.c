@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
     		if(serialGetc(&s) == 0x3F){
 				recebido[0] = 0x3F;
 				i=1;
-	    		while(serialBytesReceived(&s) < 7){
+	    		while(serialBytesReceived(&s)){
 	    			recebido[i] = serialGetc(&s);
 	    			i++;
 				}
