@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
 {
 
 	char c;
-	unsigned short setpoint=50;
-	unsigned short limite=80;
+	unsigned short setpoint;
+	unsigned short limite;
 	unsigned short aux;
 	unsigned short saida;
 	unsigned short temp;
@@ -51,6 +51,30 @@ int main(int argc, char *argv[])
 	{
 		printf("Erro de inicializacao.\n");
 		system("PAUSE"); return -1;
+	}
+
+	buffer[0] = 0x0A;
+	buffer[1] = 0x00;
+	buffer[2] = 0x00;
+	buffer[3] = 0xC7;
+	buffer[4] = 0xC1;
+	serialPutBytes(&s, buffer, 5);
+
+	if(serialGetc(&s) == 0x3F){
+		recebido[0] = 0x3F;
+		i=1;
+		while(serialBytesReceived(&s)){
+			recebido[i] = serialGetc(&s);
+			i++;
+		}
+	}
+
+	crc16_result = crc16_ccitt(recebido,5);
+
+	if(crc16_result == (recebido[5]<<8) + recebido[6]){
+
+		setpoint = recebido[1];
+		limite = recebido[2];	
 	}
 
 	while(c != 'x'){
@@ -71,7 +95,7 @@ int main(int argc, char *argv[])
 			case '1':
 				while(1){
 					system("cls");
-					printf("Limite: %d",limite);
+					printf("Limite: %d", limite);
 					printf("\nSetpoint: %d",setpoint);
 					printf("\n\n0. Retornar\n\n");
 					printf("Novo setpoint: ");
@@ -94,9 +118,7 @@ int main(int argc, char *argv[])
 						serialPutBytes(&s, buffer, 3);
 						serialPutc(&s, crc16_result>>8);
 						serialPutc(&s, crc16_result & 0xFF);
-					}
-
-					else {
+					} else {
 						printf("\nSetpoint invalido\n");
 						system("PAUSE");
 					}
