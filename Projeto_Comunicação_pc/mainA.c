@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
 
 		// Verificação da escolha do menu
 		switch (c){
+			// Mudar setpoint
 			case '1':
 				while(1){
 					system("cls");
@@ -118,6 +119,7 @@ int main(int argc, char *argv[])
 
 				}
 				break;
+			// Mudar limite alerta
 			case '2':
 				while(1){
 					system("cls");
@@ -154,6 +156,7 @@ int main(int argc, char *argv[])
 
 				}
 				break;
+			// Solicitar os dados do arduino
 			case '3':
 				while(1){
 
@@ -201,6 +204,7 @@ int main(int argc, char *argv[])
 					Sleep(1000);
 				}
 				break;
+			// Fechar o programa
 			case 'x':
 				break;
 			default:
@@ -212,14 +216,14 @@ int main(int argc, char *argv[])
 	}
 
 
-	//finaliza a porta de comunicacao
+	// Fechar a porta serial
 	if(!serialClose(&s))
 	{
 		printf("Erro de finalizacao.\n");
 		system("PAUSE"); return -1;
 	}
 
-	// encerra o programa
+	// 
 	system("PAUSE");
 	return 0;
 }
